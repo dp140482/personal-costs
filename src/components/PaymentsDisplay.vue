@@ -58,4 +58,6 @@ tbody
         border-collapse: separate
         border-bottom: 1px solid silver
         font-family: 'Helvetica Neue', 'Arial', sans-serif
+    & tr:last-of-type td
+          border-bottom: none
 </style>

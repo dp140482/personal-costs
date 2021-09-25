@@ -5,24 +5,28 @@
     </header>
     <main>
       <PaymentsDisplay :items="paymentsList" />
-      <AddPaymentForm @addNewPayment="addNewPayment" />
+      <AddCostButton v-on:clicked="showForm = !showForm" />
+      <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
     </main>
   </div>
 </template>
 
 <script>
-import PaymentsDisplay from "./components/PaymentsDisplay";
-import AddPaymentForm from "./components/AddPaymentForm";
+import PaymentsDisplay from "./components/PaymentsDisplay.vue";
+import AddPaymentForm from "./components/AddPaymentForm.vue";
+import AddCostButton from "./components/AddCostButton.vue";
 
 export default {
   name: "App",
   components: {
     PaymentsDisplay,
     AddPaymentForm,
+    AddCostButton,
   },
   data() {
     return {
       paymentsList: [],
+      showForm: false,
     };
   },
   methods: {
@@ -57,8 +61,9 @@ export default {
 
 <style lang="sass" module>
 .wrapper
-  color: black
+  margin: 20px
 
 .title
-  color: red
+  font-size: 23pt
+  font-family: 'Helvetica Neue', 'Arial', sans-serif
 </style>
