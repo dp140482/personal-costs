@@ -6,9 +6,8 @@
     <main>
       <PaymentsDisplay :items="getList()" />
       <p>Сумма расходов: {{ getSum() }}</p>
-        <AddCostButton v-on:clicked="showForm = !showForm" />
-        <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
-      </p>
+      <AddCostButton v-on:clicked="showForm = !showForm" />
+      <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
     </main>
   </div>
 </template>
