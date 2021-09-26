@@ -26,30 +26,10 @@ export default {
   },
   data() {
     return {
-      paymentsList: [],
       showForm: false,
     };
   },
   methods: {
-    fetchData() {
-      return [
-        {
-          date: "28.03.2020",
-          category: "Еда",
-          value: 169,
-        },
-        {
-          date: "24.03.2020",
-          category: "Транспорт",
-          value: 360,
-        },
-        {
-          date: "24.03.2020",
-          category: "Еда",
-          value: 532,
-        },
-      ];
-    },
     addNewPayment(data) {
       this.$store.commit("addPayment", data);
     },
@@ -61,8 +41,8 @@ export default {
     },
   },
   created() {
-    // this.$store.commit("setPaymentsListData", this.fetchData());
-    this.$store.dispatch("fetchData");
+    this.$store.dispatch({ type: "fetchData", page: 1 });
+    this.$store.dispatch({ type: "fetchData", page: 2 });
   },
 };
 </script>
