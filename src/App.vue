@@ -45,7 +45,8 @@ export default {
     },
   },
   created() {
-    this.$store.commit("setPaymentsListData", this.fetchData());
+    // this.$store.commit("setPaymentsListData", this.fetchData());
+    this.$store.dispatch("fetchData");
   },
 };
 </script>
