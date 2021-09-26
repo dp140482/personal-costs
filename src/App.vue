@@ -4,9 +4,11 @@
       <div :class="[$style.title]">Мои расходы</div>
     </header>
     <main>
-      <PaymentsDisplay :items="paymentsList" />
-      <AddCostButton v-on:clicked="showForm = !showForm" />
-      <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
+      <PaymentsDisplay :items="getList()" />
+      <p>Сумма расходов: {{ getSum() }}</p>
+        <AddCostButton v-on:clicked="showForm = !showForm" />
+        <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
+      </p>
     </main>
   </div>
 </template>
@@ -52,9 +54,15 @@ export default {
     addNewPayment(data) {
       this.paymentsList = [...this.paymentsList, data];
     },
+    getList() {
+      return this.$store.getters.getPaymentsList;
+    },
+    getSum() {
+      return this.$store.getters.getSumOfPayments;
+    },
   },
   created() {
-    this.paymentsList = this.fetchData();
+    this.$store.commit("setPaymentsListData", this.fetchData());
   },
 };
 </script>
