@@ -13,6 +13,9 @@ export default new Vuex.Store({
         },
         addPayment(state, payload) {
             state.paymentsList = [...state.paymentsList, payload];
+        },
+        addPayments(state, payload) {
+            state.paymentsList = [...state.paymentsList, ...payload];
         }
     },
     getters: {
@@ -22,20 +25,29 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        fetchData(context) {
+        fetchData(context, args) {
             let dataObj = {
                 "page1": [
-                    { "id": 1, "date": "20.03.2020", "category": "Food", "value": 169 },
-                    { "id": 2, "date": "21.03.2020", "category": "Navigation", "value": 5 },
-                    { "id": 3, "date": "22.03.2020", "category": "Sport", "value": 450 }
+                    { "id": 1, "date": "20.03.2020", "category": "Продукты", "value": 169 },
+                    { "id": 2, "date": "21.03.2020", "category": "Поездки", "value": 5 },
+                    { "id": 3, "date": "22.03.2020", "category": "Спорт", "value": 450 }
                 ],
                 "page2": [
-                    { "id": 4, "date": "23.03.2020", "category": "Entertaiment", "value": 969 },
-                    { "id": 5, "date": "24.03.2020", "category": "Education", "value": 1500 },
-                    { "id": 6, "date": "25.03.2020", "category": "Food", "value": 200 }
+                    { "id": 4, "date": "23.03.2020", "category": "Развлечения", "value": 969 },
+                    { "id": 5, "date": "24.03.2020", "category": "Образование", "value": 1500 },
+                    { "id": 6, "date": "25.03.2020", "category": "Продукты", "value": 200 }
                 ]
             };
-            context.commit("setPaymentsListData", dataObj.page2);
+            switch (args.page) {
+                case 1:
+                    context.commit("addPayments", dataObj.page1);
+                    break;
+                case 2:
+                    context.commit("addPayments", dataObj.page2);
+                    break;
+                default:
+                    context.commit("setPaymentsListData", [{ "id": 0, "date": "00.00.0000", "category": "Ошибка", "value": args.page }]);
+            }
         }
     }
 })
