@@ -6,9 +6,8 @@
     <main>
       <PaymentsDisplay :items="getList()" />
       <p>Сумма расходов: {{ getSum() }}</p>
-        <AddCostButton v-on:clicked="showForm = !showForm" />
-        <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
-      </p>
+      <AddCostButton v-on:clicked="showForm = !showForm" />
+      <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
     </main>
   </div>
 </template>
@@ -52,7 +51,7 @@ export default {
       ];
     },
     addNewPayment(data) {
-      this.paymentsList = [...this.paymentsList, data];
+      this.$store.commit("addPayment", data);
     },
     getList() {
       return this.$store.getters.getPaymentsList;
