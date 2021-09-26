@@ -5,14 +5,10 @@
     </header>
     <main>
       <PaymentsDisplay :items="getList()" />
-      <Pagination
-        :currentPage="currentPage"
-        :pagLen="getPaginationLength()"
-        @paginate="changePage"
-      />
-      <p>Сумма расходов: {{ getSum() }}. Число записей: {{ getLength() }}</p>
-      <AddCostButton v-on:clicked="showForm = !showForm" />
-      <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
+      <p>Сумма расходов: {{ getSum() }}</p>
+        <AddCostButton v-on:clicked="showForm = !showForm" />
+        <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
+      </p>
     </main>
   </div>
 </template>
@@ -43,29 +39,14 @@ export default {
       this.$store.commit("addPayment", data);
     },
     getList() {
-      return this.$store.getters.getFrame(
-        this.linesOnPage * (this.currentPage - 1),
-        this.linesOnPage * this.currentPage
-      );
+      return this.$store.getters.getPaymentsList;
     },
     getSum() {
       return this.$store.getters.getSumOfPayments;
     },
-    getLength() {
-      return this.$store.getters.getLength;
-    },
-    changePage(page) {
-      this.currentPage = page;
-      if (this.$store.getters.getLength < this.linesOnPage * this.currentPage) {
-        this.$store.dispatch({ type: "fetchData", page: this.currentPage });
-      }
-    },
-    getPaginationLength() {
-      return Math.max(2, Math.ceil(this.getLength() / 3));
-    },
   },
   created() {
-    this.$store.dispatch({ type: "fetchData", page: 1 });
+    this.$store.commit("setPaymentsListData", this.fetchData());
   },
 };
 </script>
