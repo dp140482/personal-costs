@@ -38,16 +38,7 @@ export default new Vuex.Store({
                     { "id": 6, "date": "25.03.2020", "category": "Продукты", "value": 200 }
                 ]
             };
-            switch (args.page) {
-                case 1:
-                    context.commit("addPayments", dataObj.page1);
-                    break;
-                case 2:
-                    context.commit("addPayments", dataObj.page2);
-                    break;
-                default:
-                    context.commit("setPaymentsListData", [{ "id": 0, "date": "00.00.0000", "category": "Ошибка", "value": args.page }]);
-            }
+            context.commit("addPayments", dataObj["page" + args.page]);
         }
     }
 })
