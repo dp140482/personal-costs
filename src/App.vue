@@ -5,6 +5,7 @@
     </header>
     <main>
       <PaymentsDisplay :items="getList()" />
+      <Pagination />
       <p>Сумма расходов: {{ getSum() }}</p>
       <AddCostButton v-on:clicked="showForm = !showForm" />
       <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
@@ -16,6 +17,7 @@
 import PaymentsDisplay from "./components/PaymentsDisplay.vue";
 import AddPaymentForm from "./components/AddPaymentForm.vue";
 import AddCostButton from "./components/AddCostButton.vue";
+import Pagination from "./components/Pagination.vue";
 
 export default {
   name: "App",
@@ -23,6 +25,7 @@ export default {
     PaymentsDisplay,
     AddPaymentForm,
     AddCostButton,
+    Pagination,
   },
   data() {
     return {
@@ -42,7 +45,6 @@ export default {
   },
   created() {
     this.$store.dispatch({ type: "fetchData", page: 1 });
-    this.$store.dispatch({ type: "fetchData", page: 2 });
   },
 };
 </script>
