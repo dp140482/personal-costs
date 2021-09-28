@@ -5,6 +5,7 @@
     </header>
     <main>
       <PaymentsDisplay :items="getList()" />
+      <Pagination />
       <p>Сумма расходов: {{ getSum() }}</p>
       <AddCostButton v-on:clicked="showForm = !showForm" />
       <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
@@ -46,7 +47,6 @@ export default {
   },
   created() {
     this.$store.dispatch({ type: "fetchData", page: 1 });
-    this.$store.dispatch({ type: "fetchData", page: 2 });
   },
 };
 </script>
