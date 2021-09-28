@@ -23,6 +23,10 @@ export default new Vuex.Store({
         getSumOfPayments: state => {
             return state.paymentsList.reduce((res, cur) => res + cur.value, 0);
         },
+        getLength: state => state.paymentsList.length,
+        getFrame: state => (from, to) => {
+            return state.paymentsList.slice(from, to);
+        }
     },
     actions: {
         fetchData(context, args) {
@@ -38,7 +42,9 @@ export default new Vuex.Store({
                     { "id": 6, "date": "25.03.2020", "category": "Продукты", "value": 200 }
                 ]
             };
-            context.commit("addPayments", dataObj["page" + args.page]);
+            if (args.page < 3) {
+                context.commit("addPayments", dataObj["page" + args.page]);
+            }
         }
     }
 })

@@ -16,17 +16,14 @@
 <script>
 export default {
   name: "Pagination",
-  data() {
-    return {
-      pagLen: 2,
-      currentPage: 1,
-    };
+  props: {
+    currentPage: Number,
+    pagLen: Number,
   },
   methods: {
     onClick(page) {
       if (page < 1 || page > this.pagLen) return;
-      this.currentPage = page;
-      this.$store.dispatch({ type: "fetchData", page: this.currentPage });
+      this.$emit("paginate", page);
     },
   },
 };
