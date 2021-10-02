@@ -13,7 +13,7 @@
       <p>Сумма расходов: {{ getSum() }}. Число записей: {{ getLength() }}</p>
       <AddCostButton v-on:clicked="showForm = !showForm" />
       <a href="/add/payment/Food?value=200">Продукты 200</a>
-      <a href="/add/payment/Transport?value=50">Транспорт 50</a>
+      <a href="/add/payment/Transport?value=50">Поездки 50</a>
       <a href="/add/payment/Entertainment?value=2000">Развлечения 2000</a>
       <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
     </main>
@@ -69,6 +69,9 @@ export default {
   },
   created() {
     this.$store.dispatch({ type: "fetchData", page: 1 });
+    this.showForm =
+      this.$route.name === "addpayment" || this.$route.name === "addvalue";
+    if (this.$route.params.page) this.changePage(+this.$route.params.page);
   },
 };
 </script>
