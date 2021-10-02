@@ -12,6 +12,9 @@
       />
       <p>Сумма расходов: {{ getSum() }}. Число записей: {{ getLength() }}</p>
       <AddCostButton v-on:clicked="showForm = !showForm" />
+      <a href="/add/payment/Food?value=200">Продукты 200</a>
+      <a href="/add/payment/Transport?value=50">Транспорт 50</a>
+      <a href="/add/payment/Entertainment?value=2000">Развлечения 2000</a>
       <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
     </main>
   </div>
@@ -77,4 +80,8 @@ export default {
 .title
   font-size: 23pt
   font-family: 'Helvetica Neue', 'Arial', sans-serif
+
+a
+  color: maroon
+  padding: 0 30px 0 0
 </style>
