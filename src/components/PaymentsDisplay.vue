@@ -7,6 +7,7 @@
           <th>Дата</th>
           <th>Категория</th>
           <th>Сумма</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -15,6 +16,7 @@
           <td>{{ item.date }}</td>
           <td>{{ item.category }}</td>
           <td>{{ item.value }}</td>
+          <td :class="[$style.button]">︙<ContextMenu /></td>
         </tr>
       </tbody>
     </table>
@@ -22,6 +24,8 @@
 </template>
 
 <script>
+import ContextMenu from "./ContextMenu.vue";
+
 export default {
   name: "PaymentsDisplay",
   props: {
@@ -29,6 +33,9 @@ export default {
       type: Array,
       default: [],
     },
+  },
+  components: {
+    ContextMenu,
   },
 };
 </script>
@@ -60,4 +67,9 @@ tbody
         font-family: 'Helvetica Neue', 'Arial', sans-serif
     & tr:last-of-type td
           border-bottom: none
+
+.button
+    font-weight: bold
+    cursor: pointer
+    position: relative
 </style>
