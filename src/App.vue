@@ -71,6 +71,9 @@ export default {
       this.$route.name === "addpayment" || this.$route.name === "addvalue";
     if (this.$route.params.page) this.changePage(+this.$route.params.page);
   },
+  beforeDestroy() {
+    globalEventBus.$off();
+  },
 };
 </script>
 
