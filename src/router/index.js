@@ -14,10 +14,4 @@ const router = new Router({
     }]
 })
 
-/*
-router.afterEach((to, from) => {
-    to.
-})
-*/
-
 export default router;

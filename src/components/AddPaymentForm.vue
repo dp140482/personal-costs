@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { globalEventBus } from "../main";
+
 export default {
   data() {
     return {
@@ -58,6 +60,7 @@ export default {
     }
     if (this.category && this.value && this.date) {
       this.onSaveClick();
+      globalEventBus.$emit("paginate", "last");
     }
   },
 };
