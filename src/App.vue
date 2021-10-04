@@ -4,8 +4,13 @@
       <div :class="[$style.title]">Мои расходы</div>
     </header>
     <main>
-      <PaymentsDisplay :items="paymentsList" />
+      <PaymentsDisplay :items="getList()" />
+      <Pagination :currentPage="currentPage" :pagLen="getPaginationLength()" />
+      <p>Сумма расходов: {{ getSum() }}. Число записей: {{ getLength() }}</p>
       <AddCostButton v-on:clicked="showForm = !showForm" />
+      <a href="/add/payment/Food?value=200">Продукты 200</a>
+      <a href="/add/payment/Transport?value=50">Поездки 50</a>
+      <a href="/add/payment/Entertainment?value=2000">Развлечения 2000</a>
       <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
     </main>
   </div>
@@ -15,6 +20,8 @@
 import PaymentsDisplay from "./components/PaymentsDisplay.vue";
 import AddPaymentForm from "./components/AddPaymentForm.vue";
 import AddCostButton from "./components/AddCostButton.vue";
+import Pagination from "./components/Pagination.vue";
+import { globalEventBus } from "./main";
 
 export default {
   name: "App",
@@ -22,39 +29,47 @@ export default {
     PaymentsDisplay,
     AddPaymentForm,
     AddCostButton,
+    Pagination,
   },
   data() {
     return {
-      paymentsList: [],
       showForm: false,
+      currentPage: 1,
+      linesOnPage: 3,
     };
   },
   methods: {
-    fetchData() {
-      return [
-        {
-          date: "28.03.2020",
-          category: "Еда",
-          value: 169,
-        },
-        {
-          date: "24.03.2020",
-          category: "Транспорт",
-          value: 360,
-        },
-        {
-          date: "24.03.2020",
-          category: "Еда",
-          value: 532,
-        },
-      ];
-    },
     addNewPayment(data) {
-      this.paymentsList = [...this.paymentsList, data];
+      this.$store.commit("addPayment", data);
+    },
+    getList() {
+      return this.$store.getters.getFrame(
+        this.linesOnPage * (this.currentPage - 1),
+        this.linesOnPage * this.currentPage
+      );
+    },
+    getSum() {
+      return this.$store.getters.getSumOfPayments;
+    },
+    getLength() {
+      return this.$store.getters.getLength;
+    },
+    getPaginationLength() {
+      return Math.ceil(this.getLength() / this.linesOnPage);
     },
   },
   created() {
-    this.paymentsList = this.fetchData();
+    this.$store.dispatch({ type: "fetchData" });
+    globalEventBus.$on("paginate", (page) => {
+      if (page === "last") {
+        this.currentPage = this.getPaginationLength();
+      } else {
+        this.currentPage = +page;
+      }
+    });
+    this.showForm =
+      this.$route.name === "addpayment" || this.$route.name === "addvalue";
+    if (this.$route.params.page) this.changePage(+this.$route.params.page);
   },
 };
 </script>
@@ -66,4 +81,8 @@ export default {
 .title
   font-size: 23pt
   font-family: 'Helvetica Neue', 'Arial', sans-serif
+
+a
+  color: maroon
+  padding: 0 30px 0 0
 </style>

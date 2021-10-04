@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { globalEventBus } from "../main";
+
 export default {
   data() {
     return {
@@ -34,6 +36,32 @@ export default {
       };
       this.$emit("addNewPayment", data);
     },
+    translateCategory(category) {
+      switch (category) {
+        case "Transport":
+          return "Поездки";
+        case "Food":
+          return "Продукты";
+        case "Sport":
+          return "Спорт";
+        case "Entertainment":
+          return "Развлечения";
+        case "Education":
+          return "Образование";
+      }
+      return category;
+    },
+  },
+  created() {
+    if (this.$route) {
+      this.category = this.translateCategory(this.$route.params.category);
+      this.value = this.$route.query.value;
+      this.date = this.getCurrentDate;
+    }
+    if (this.category && this.value && this.date) {
+      this.onSaveClick();
+      globalEventBus.$emit("paginate", "last");
+    }
   },
 };
 </script>
