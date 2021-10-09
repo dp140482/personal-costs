@@ -19,6 +19,9 @@ export default new Vuex.Store({
         },
         addPayments(state, payload) {
             state.paymentsList = [...state.paymentsList, ...payload];
+        },
+        deletePayment(state, id) {
+            state.paymentsList.splice(state.paymentsList.findIndex(item => item.id === id), 1);
         }
     },
     getters: {
