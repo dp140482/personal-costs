@@ -4,7 +4,13 @@
       <div :class="[$style.title]">Мои расходы</div>
     </header>
     <main>
-      <PaymentsDisplay :items="paymentsList" />
+      <PaymentsDisplay :items="getList()" />
+      <Pagination
+        :currentPage="currentPage"
+        :pagLen="getPaginationLength()"
+        @paginate="changePage"
+      />
+      <p>Сумма расходов: {{ getSum() }}. Число записей: {{ getLength() }}</p>
       <AddCostButton v-on:clicked="showForm = !showForm" />
       <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
     </main>
@@ -15,6 +21,7 @@
 import PaymentsDisplay from "./components/PaymentsDisplay.vue";
 import AddPaymentForm from "./components/AddPaymentForm.vue";
 import AddCostButton from "./components/AddCostButton.vue";
+import Pagination from "./components/Pagination.vue";
 
 export default {
   name: "App",
@@ -22,39 +29,43 @@ export default {
     PaymentsDisplay,
     AddPaymentForm,
     AddCostButton,
+    Pagination,
   },
   data() {
     return {
-      paymentsList: [],
       showForm: false,
+      currentPage: 1,
+      linesOnPage: 3,
     };
   },
   methods: {
-    fetchData() {
-      return [
-        {
-          date: "28.03.2020",
-          category: "Еда",
-          value: 169,
-        },
-        {
-          date: "24.03.2020",
-          category: "Транспорт",
-          value: 360,
-        },
-        {
-          date: "24.03.2020",
-          category: "Еда",
-          value: 532,
-        },
-      ];
-    },
     addNewPayment(data) {
-      this.paymentsList = [...this.paymentsList, data];
+      this.$store.commit("addPayment", data);
+    },
+    getList() {
+      return this.$store.getters.getFrame(
+        this.linesOnPage * (this.currentPage - 1),
+        this.linesOnPage * this.currentPage
+      );
+    },
+    getSum() {
+      return this.$store.getters.getSumOfPayments;
+    },
+    getLength() {
+      return this.$store.getters.getLength;
+    },
+    changePage(page) {
+      this.currentPage = page;
+      if (this.$store.getters.getLength < this.linesOnPage * this.currentPage) {
+        this.$store.dispatch({ type: "fetchData", page: this.currentPage });
+      }
+    },
+    getPaginationLength() {
+      return Math.max(2, Math.ceil(this.getLength() / 3));
     },
   },
   created() {
-    this.paymentsList = this.fetchData();
+    this.$store.dispatch({ type: "fetchData", page: 1 });
   },
 };
 </script>
