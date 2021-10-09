@@ -46,7 +46,7 @@ export default {
         {
           text: "Редактировать",
           action: () => {
-            console.log("edit", item);
+            this.$context.EventBus.$emit("showModalForm", item);
           },
         },
         {
