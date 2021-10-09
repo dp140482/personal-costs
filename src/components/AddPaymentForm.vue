@@ -56,12 +56,14 @@ export default {
     if (this.$route) {
       this.category = this.translateCategory(this.$route.params.category);
       this.value = this.$route.query.value;
-      this.date = this.getCurrentDate;
+      this.date = this.$route.query.date || this.getCurrentDate;
     }
+    /*
     if (this.category && this.value && this.date) {
       this.onSaveClick();
       globalEventBus.$emit("paginate", "last");
     }
+    */
   },
 };
 </script>

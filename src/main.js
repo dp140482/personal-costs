@@ -1,16 +1,17 @@
 import Vue from 'vue';
-import store from "./store";
 import App from './App.vue';
+
+import store from "./store";
 import router from './router';
-import modalWindow from './plugins/modalWindow';
+import context from './plugins/ContextMenu';
 
 Vue.config.productionTip = false;
+Vue.use(context);
 
 export const globalEventBus = new Vue();
 
 new Vue({
     store,
     router,
-    modalWindow,
     render: h => h(App),
 }).$mount('#app');

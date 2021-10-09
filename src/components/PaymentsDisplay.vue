@@ -16,7 +16,12 @@
           <td>{{ item.date }}</td>
           <td>{{ item.category }}</td>
           <td>{{ item.value }}</td>
-          <td :class="[$style.button]">︙<ContextMenu /></td>
+          <td
+            @click="onClickContextItem($event, item)"
+            :class="[$style.contextevent]"
+          >
+            ︙
+          </td>
         </tr>
       </tbody>
     </table>
@@ -24,8 +29,6 @@
 </template>
 
 <script>
-import ContextMenu from "./ContextMenu.vue";
-
 export default {
   name: "PaymentsDisplay",
   props: {
@@ -34,8 +37,28 @@ export default {
       default: [],
     },
   },
-  components: {
-    ContextMenu,
+  data() {
+    return {};
+  },
+  methods: {
+    onClickContextItem(event, item) {
+      const items = [
+        {
+          text: "Редактировать",
+          action: () => {
+            console.log("edit", item);
+          },
+        },
+        {
+          text: "Удалить",
+          action: () => {
+            this.$emit("deletePayment", item.id);
+            this.$context.close();
+          },
+        },
+      ];
+      this.$context.show({ event, items });
+    },
   },
 };
 </script>
@@ -72,4 +95,7 @@ tbody
     font-weight: bold
     cursor: pointer
     position: relative
+
+.contextevent
+  cursor: pointer
 </style>
