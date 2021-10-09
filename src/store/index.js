@@ -22,6 +22,11 @@ export default new Vuex.Store({
         },
         deletePayment(state, id) {
             state.paymentsList.splice(state.paymentsList.findIndex(item => item.id === id), 1);
+        },
+        editPayment(state, payload) {
+            state.paymentsList.splice(
+                state.paymentsList.findIndex(item => item.id === payload.id), 1, payload
+            );
         }
     },
     getters: {

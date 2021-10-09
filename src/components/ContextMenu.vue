@@ -8,6 +8,12 @@
     >
       {{ item.text }}
     </div>
+    <div :class="[$style.wrapper]" v-show="showForm">
+      <input placeholder="Сумма" v-model="value" />
+      <input placeholder="Категория" v-model="category" />
+      <input placeholder="Дата" v-model="date" />
+      <button @click="onSaveClick">Сохранить</button>
+    </div>
   </div>
 </template>
 
@@ -20,6 +26,11 @@ export default {
       shown: false,
       xPos: 0,
       yPos: 0,
+      value: 0,
+      id: 0,
+      category: "",
+      date: "",
+      showForm: false,
     };
   },
   methods: {
@@ -40,6 +51,16 @@ export default {
       this.xPos = pos.left;
       this.yPos = pos.top;
     },
+    onSaveClick() {
+      const data = {
+        id: this.id,
+        value: this.value,
+        category: this.category,
+        date: this.date,
+      };
+      this.$context.EventBus.$emit("saveFromModalForm", data);
+      this.showForm = false;
+    },
   },
   computed: {
     styles() {
@@ -52,10 +73,18 @@ export default {
   mounted() {
     this.$context.EventBus.$on("shown", this.onShown);
     this.$context.EventBus.$on("close", this.onClose);
+    this.$context.EventBus.$on("showModalForm", (data) => {
+      this.value = data.value;
+      this.category = data.category;
+      this.date = data.date;
+      this.id = data.id;
+      this.showForm = true;
+    });
   },
   beforeDestroy() {
     this.$context.EventBus.$off("shown", this.onShown);
     this.$context.EventBus.$off("close", this.onClose);
+    this.$context.EventBus.$off("showModalForm");
   },
 };
 </script>
@@ -72,4 +101,9 @@ export default {
     font-weight: normal
     line-height: 150%
     cursor: pointer
+
+.wrapper
+    margin: 20px
+    display: flex
+    flex-direction: column
 </style>

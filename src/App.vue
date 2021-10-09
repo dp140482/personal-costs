@@ -78,6 +78,10 @@ export default {
     this.showForm =
       this.$route.name === "addpayment" || this.$route.name === "addvalue";
     if (this.$route.params.page) this.changePage(+this.$route.params.page);
+
+    this.$context.EventBus.$on("saveFromModalForm", (data) => {
+      this.$store.commit("editPayment", data);
+    });
   },
   beforeDestroy() {
     globalEventBus.$off();
