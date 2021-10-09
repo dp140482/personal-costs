@@ -85,6 +85,24 @@ export default {
 };
 </script>
 
+<style>
+.fade-enter-active {
+  transition: opacity 0.5s;
+}
+
+.fade-leave-active {
+  transition: opacity 1.8s;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
+
 <style lang="sass" module>
 .wrapper
   margin: 20px
