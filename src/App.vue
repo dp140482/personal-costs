@@ -23,15 +23,36 @@
     </v-app-bar>
 
     <v-main>
-      <div class="text-h5">Мои расходы</div>
-      <PaymentsDisplay :items="getList()" @deletePayment="deletePayment" />
-      <Pagination :currentPage="currentPage" :pagLen="getPaginationLength()" />
-      <p>Сумма расходов: {{ getSum() }}. Число записей: {{ getLength() }}</p>
-      <AddCostButton v-on:clicked="showForm = !showForm" />
-      <a href="/add/payment/Food?value=200">Продукты 200</a>
-      <a href="/add/payment/Transport?value=50">Поездки 50</a>
-      <a href="/add/payment/Entertainment?value=2000">Развлечения 2000</a>
-      <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
+      <v-container>
+        <v-row>
+          <v-col>
+            <div class="text-h5 mt-2 mb-2">Мои расходы</div>
+            <PaymentsDisplay
+              :items="getList()"
+              @deletePayment="deletePayment"
+            />
+            <div class="text-center">
+              <v-pagination
+                v-model="currentPage"
+                :length="getPaginationLength()"
+              ></v-pagination>
+            </div>
+            <v-chip class="mr-1 mt-3">Сумма расходов: {{ getSum() }}</v-chip>
+            <v-chip class="ml-1 mt-3">Число записей: {{ getLength() }}</v-chip>
+            <v-btn
+              color="teal"
+              :ripple="false"
+              class="mt-5"
+              dark
+              @click="showForm = !showForm"
+            >
+              Добавить строку расходов <v-icon class="ml-3">mdi-plus</v-icon>
+            </v-btn>
+            <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
+          </v-col>
+          <v-col></v-col>
+        </v-row>
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -39,8 +60,6 @@
 <script>
 import PaymentsDisplay from "./components/PaymentsDisplay.vue";
 import AddPaymentForm from "./components/AddPaymentForm.vue";
-import AddCostButton from "./components/AddCostButton.vue";
-import Pagination from "./components/Pagination.vue";
 import { globalEventBus } from "./main";
 import ContextMenu from "./components/ContextMenu.vue";
 
@@ -49,8 +68,6 @@ export default {
   components: {
     PaymentsDisplay,
     AddPaymentForm,
-    AddCostButton,
-    Pagination,
     ContextMenu,
   },
   data() {
