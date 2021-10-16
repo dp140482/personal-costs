@@ -1,8 +1,19 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import App from './App.vue';
 
-Vue.config.productionTip = false
+import store from "./store";
+import router from './router';
+import context from './plugins/ContextMenu';
+import vuetify from './plugins/vuetify';
+
+Vue.config.productionTip = false;
+Vue.use(context);
+
+export const globalEventBus = new Vue();
 
 new Vue({
-    render: h => h(App),
-}).$mount('#app')
+    store,
+    router,
+    vuetify,
+    render: h => h(App)
+}).$mount('#app');
