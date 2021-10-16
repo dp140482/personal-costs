@@ -39,18 +39,15 @@
             </div>
             <v-chip class="mr-1 mt-3">Сумма расходов: {{ getSum() }}</v-chip>
             <v-chip class="ml-1 mt-3">Число записей: {{ getLength() }}</v-chip>
-            <v-btn
-              color="teal"
-              :ripple="false"
-              class="mt-5"
-              dark
-              @click="showForm = !showForm"
-            >
-              Добавить строку расходов <v-icon class="ml-3">mdi-plus</v-icon>
-            </v-btn>
-            <AddPaymentForm @addNewPayment="addNewPayment" v-show="showForm" />
+            <AddPaymentForm @addNewPayment="addNewPayment" />
           </v-col>
-          <v-col></v-col>
+          <v-col>
+            <DoughnutChart
+              :chartData="getChartData()"
+              :options="options"
+              :key="barKey"
+            />
+          </v-col>
         </v-row>
       </v-container>
     </v-main>
@@ -62,6 +59,7 @@ import PaymentsDisplay from "./components/PaymentsDisplay.vue";
 import AddPaymentForm from "./components/AddPaymentForm.vue";
 import { globalEventBus } from "./main";
 import ContextMenu from "./components/ContextMenu.vue";
+import DoughnutChart from "./components/Chart.vue";
 
 export default {
   name: "App",
@@ -69,17 +67,43 @@ export default {
     PaymentsDisplay,
     AddPaymentForm,
     ContextMenu,
+    DoughnutChart,
   },
   data() {
     return {
-      showForm: false,
       currentPage: 1,
       linesOnPage: 3,
+      barKey: 0,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
     };
   },
   methods: {
+    getChartData() {
+      console.log("take chartData");
+      return {
+        labels: this.$store.getters.getUniqueCategories,
+        datasets: [
+          {
+            data: this.$store.getters.getValuesByCategory,
+            backgroundColor: [
+              "red",
+              "green",
+              "blue",
+              "yellow",
+              "orange",
+              "magenta",
+              "cyan",
+            ],
+          },
+        ],
+      };
+    },
     addNewPayment(data) {
       this.$store.commit("addPayment", data);
+      this.barKey = (this.barKey + 1) % 2;
     },
     deletePayment(id) {
       this.$store.commit("deletePayment", id);
@@ -112,9 +136,6 @@ export default {
     this.showForm =
       this.$route.name === "addpayment" || this.$route.name === "addvalue";
     if (this.$route.params.page) this.changePage(+this.$route.params.page);
-    this.$context.EventBus.$on("saveFromModalForm", (data) => {
-      this.$store.commit("editPayment", data);
-    });
   },
   beforeDestroy() {
     globalEventBus.$off();

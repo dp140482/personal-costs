@@ -1,12 +1,33 @@
 <template>
-  <div class="grey lighten-2 pt-4 pb-4 pl-2 pr-2 mt-3">
-    <v-text-field placeholder="Сумма" solo></v-text-field>
-    <v-text-field placeholder="Категория" solo></v-text-field>
-    <v-text-field placeholder="Дата" solo></v-text-field>
-    <v-btn color="teal" :ripple="false" dark @click="onSaveClick">
-      Добавить
-    </v-btn>
-  </div>
+  <v-dialog v-model="showForm" width="500">
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        color="teal"
+        :ripple="false"
+        class="mt-5"
+        dark
+        @click="showForm = !showForm"
+      >
+        Добавить строку расходов
+        <v-icon class="ml-3">mdi-plus</v-icon>
+      </v-btn>
+    </template>
+    <v-card>
+      <v-card-title>Форма добавления расходов</v-card-title>
+      <v-card-text background="indigo">
+        <v-text-field label="Сумма" v-model="value" solo></v-text-field>
+        <v-text-field label="Категория" v-model="category" solo></v-text-field>
+        <v-text-field label="Дата" v-model="date" solo></v-text-field>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="teal" :ripple="false" dark @click="onSaveClick">
+          Добавить
+        </v-btn>
+        <v-spacer></v-spacer>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -18,6 +39,7 @@ export default {
       value: "",
       category: "",
       date: "",
+      showForm: false,
     };
   },
   computed: {
