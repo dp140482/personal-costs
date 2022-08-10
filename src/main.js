@@ -1,9 +1,12 @@
 import Vue from 'vue';
-import store from "./store";
 import App from './App.vue';
+
+import store from "./store";
 import router from './router';
+import context from './plugins/ContextMenu';
 
 Vue.config.productionTip = false;
+Vue.use(context);
 
 export const globalEventBus = new Vue();
 
