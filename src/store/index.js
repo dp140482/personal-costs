@@ -37,6 +37,28 @@ export default new Vuex.Store({
         getLength: state => state.paymentsList.length,
         getFrame: state => (from, to) => {
             return state.paymentsList.slice(from, to);
+        },
+        getUniqueCategories: state => {
+            let res = [];
+            state.paymentsList.forEach(item => {
+                if (!res.includes(item.category)) {
+                    res.push(item.category);
+                }
+            });
+            return res;
+        },
+        getValuesByCategory: state => {
+            let cat = [];
+            let val = [];
+            state.paymentsList.forEach(item => {
+                if (!cat.includes(item.category)) {
+                    cat.push(item.category);
+                    val.push(item.value);
+                } else {
+                    val[cat.indexOf(item.category)] += item.value;
+                }
+            });
+            return val;
         }
     },
     actions: {
