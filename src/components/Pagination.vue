@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { globalEventBus } from "../main";
+
 export default {
   name: "Pagination",
   props: {
@@ -23,7 +25,7 @@ export default {
   methods: {
     onClick(page) {
       if (page < 1 || page > this.pagLen) return;
-      this.$emit("paginate", page);
+      globalEventBus.$emit("paginate", page);
     },
   },
 };
